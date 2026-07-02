@@ -1,14 +1,13 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import { Activity, LeaderboardEntry, Team, User, Workout } from './models';
+import { connectToDatabase, mongoUri } from './config/database';
 
 dotenv.config();
 
 const app = express();
 const port = Number(process.env.PORT || 8000);
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/octofit_db';
 
 app.use(cors());
 app.use(express.json());
@@ -70,7 +69,7 @@ app.get('/api/workouts/', async (_req: Request, res: Response) => {
 });
 
 const startServer = async () => {
-  await mongoose.connect(mongoUri);
+  await connectToDatabase();
   console.log(`Connected to MongoDB at ${mongoUri}`);
 
   app.listen(port, () => {
