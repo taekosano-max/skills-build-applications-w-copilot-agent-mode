@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiBaseUrl, normalizeCollection } from '../lib/api';
+import { normalizeCollection } from '../lib/api';
 
 export default function Leaderboard() {
   const [entries, setEntries] = useState([]);
@@ -9,7 +9,10 @@ export default function Leaderboard() {
   useEffect(() => {
     const loadLeaderboard = async () => {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/leaderboard/`);
+        const apiUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard`
+          : 'http://localhost:8000/api/leaderboard';
+        const response = await fetch(apiUrl);
         const payload = await response.json();
         setEntries(normalizeCollection(payload, 'leaderboard'));
       } catch (err) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiBaseUrl, normalizeCollection } from '../lib/api';
+import { normalizeCollection } from '../lib/api';
 
 export default function Workouts() {
   const [workouts, setWorkouts] = useState([]);
@@ -9,7 +9,10 @@ export default function Workouts() {
   useEffect(() => {
     const loadWorkouts = async () => {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/workouts/`);
+        const apiUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts`
+          : 'http://localhost:8000/api/workouts';
+        const response = await fetch(apiUrl);
         const payload = await response.json();
         setWorkouts(normalizeCollection(payload, 'workouts'));
       } catch (err) {

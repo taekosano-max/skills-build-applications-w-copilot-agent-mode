@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiBaseUrl, normalizeCollection } from '../lib/api';
+import { normalizeCollection } from '../lib/api';
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
@@ -9,7 +9,10 @@ export default function Teams() {
   useEffect(() => {
     const loadTeams = async () => {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/teams/`);
+        const apiUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams`
+          : 'http://localhost:8000/api/teams';
+        const response = await fetch(apiUrl);
         const payload = await response.json();
         setTeams(normalizeCollection(payload, 'teams'));
       } catch (err) {
