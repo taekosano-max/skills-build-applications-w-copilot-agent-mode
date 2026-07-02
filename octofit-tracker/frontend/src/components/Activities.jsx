@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiUrl, normalizeCollection } from '../lib/api';
+import { getApiBaseUrl, normalizeCollection } from '../lib/api';
 
 export default function Activities() {
   const [activities, setActivities] = useState([]);
@@ -9,7 +9,7 @@ export default function Activities() {
   useEffect(() => {
     const loadActivities = async () => {
       try {
-        const response = await fetch(getApiUrl('activities'));
+        const response = await fetch(`${getApiBaseUrl()}/api/activities/`);
         const payload = await response.json();
         setActivities(normalizeCollection(payload, 'activities'));
       } catch (err) {

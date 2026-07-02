@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiUrl, normalizeCollection } from '../lib/api';
+import { getApiBaseUrl, normalizeCollection } from '../lib/api';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ export default function Users() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const response = await fetch(getApiUrl('users'));
+        const response = await fetch(`${getApiBaseUrl()}/api/users/`);
         const payload = await response.json();
         setUsers(normalizeCollection(payload, 'users'));
       } catch (err) {

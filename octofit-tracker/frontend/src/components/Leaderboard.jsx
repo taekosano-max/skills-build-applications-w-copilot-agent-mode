@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiUrl, normalizeCollection } from '../lib/api';
+import { getApiBaseUrl, normalizeCollection } from '../lib/api';
 
 export default function Leaderboard() {
   const [entries, setEntries] = useState([]);
@@ -9,7 +9,7 @@ export default function Leaderboard() {
   useEffect(() => {
     const loadLeaderboard = async () => {
       try {
-        const response = await fetch(getApiUrl('leaderboard'));
+        const response = await fetch(`${getApiBaseUrl()}/api/leaderboard/`);
         const payload = await response.json();
         setEntries(normalizeCollection(payload, 'leaderboard'));
       } catch (err) {
